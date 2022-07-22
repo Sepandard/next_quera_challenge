@@ -7,10 +7,12 @@ const Layout = ({ children }) => {
   return (
     <div className="h-100">
       <Navbar />
-      <div className="container">
-        <Box bg="palette.100" borderRadius='lg'>
-          <main className="w-100">{children}</main>
-        </Box>
+      <div>
+        <div className="container">
+          <Box bg="palette.100" borderRadius="lg" p={5}>
+            <main className="w-100">{children}</main>
+          </Box>
+        </div>
       </div>
     </div>
   );
