@@ -51,7 +51,7 @@ export default function Navbar() {
         </Flex>
       </Box>
 
-      <Box p={4}>Main Content Here</Box>
+      <Box p={4}></Box>
     </>
   );
 }
