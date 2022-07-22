@@ -2,8 +2,11 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { Flex, Avatar } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import Repositories from "../../../components/repositories/Repositories";
 
-
+const Wrapper = ({ children, condition }) => {
+  return condition ? <p>User Not Found</p>: children;
+};
 
 const Profile = () => {
   const router = useRouter();
@@ -16,14 +19,11 @@ const Profile = () => {
           .get(`https://api.github.com/users/${username}`)
           .then(function (response) {
             return {
-              users: response.data,
+              users: response.data ? response.data : response.message,
             };
           })
-          .catch(function (error) {
-            // console.log(error);
-          });
+          .catch(function (error) {});
         setData(data);
-        console.log(data);
       }
     };
 
@@ -31,13 +31,16 @@ const Profile = () => {
   }, [username]);
 
   return (
-    <>
+    <Wrapper condition={data ? data.users.message : true }>
+
       <h1 className="p-3">Username Searched: {username}</h1>
-      <Flex gap={2} p={2}>
-        <div>
-          <Avatar m={6} size="2xl" src={data ? data.users.avatar_url : ""} />{" "}
+      <Flex className="row" gap={2} p={2}>
+        <div className="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+          <Flex justifyContent="center">
+            <Avatar m={6} size="2xl" src={data ? data.users.avatar_url : ""} />{" "}
+          </Flex>
         </div>
-        <div>
+        <div className="col-lg-8 col-md-12 col-sm-12 col-xs-12">
           <Flex
             className="w-100 h-100"
             gap={8}
@@ -47,14 +50,14 @@ const Profile = () => {
             <div>
               <span>
                 {" "}
-                name :{" "}
+                Name :{" "}
                 <b>{data ? (data.users.name ? data.users.name : " - ") : ""}</b>
               </span>{" "}
             </div>
             <div>
               <span>
                 {" "}
-                bio :
+                Bio :
                 <b> {data ? (data.users.bio ? data.users.bio : " - ") : ""}</b>
               </span>{" "}
             </div>
@@ -87,7 +90,9 @@ const Profile = () => {
           </Flex>
         </div>
       </Flex>
-    </>
+      <Repositories userData={data}></Repositories>
+      </Wrapper>
+ 
   );
 };
 
